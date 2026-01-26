@@ -2,13 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "./lib/jwt";
 
 export function proxy(req: NextRequest) {
-  const path = req.nextUrl.pathname;
   const token = req.cookies.get("token")?.value ?? "";
 
-  if (path.startsWith("/dashboard")) {
-    if (!token) {
-      return NextResponse.redirect(new URL("/signin", req.url));
-    }
+  if (!token) {
+    return NextResponse.redirect(new URL("/signin", req.url));
   }
 
   try {
@@ -24,5 +21,5 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard"],
+  matcher: ["/dashboard/:path*", "/profile/:path*"],
 };
