@@ -31,6 +31,13 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    await prisma.account.create({
+      data: {
+        userId: user.id,
+        balance: 1 + Math.random() * 1000,
+      }
+    })
+
     return NextResponse.json({
       message: "User created successfully",
       userId: user.id,
