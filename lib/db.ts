@@ -1,11 +1,27 @@
+import { Pool } from 'pg' 
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '../app/generated/prisma/client'
 
-const pool = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
-const prisma = new PrismaClient({ adapter: pool })
+const connectionString = process.env.DATABASE_URL
 
-const globalForPrisma = global as unknown as { prisma: typeof prisma }
+type GlobalWithPrisma = typeof globalThis & {
+  prisma?: PrismaClient
+}
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+const g = globalThis as GlobalWithPrisma
+
+if (!g.prisma) {
+  const pool = new Pool({ connectionString })
+  const adapter = new PrismaPg(pool)
+  g.prisma = new PrismaClient({ 
+    adapter,
+    transactionOptions: {
+      maxWait: 5000, 
+      timeout: 10000  
+    }
+  })
+}
+
+const prisma = g.prisma
 
 export default prisma
