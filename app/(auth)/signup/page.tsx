@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SpinnerButton } from "@/components/Spinner"
 
 export default function SignUp() {
   const router = useRouter();
@@ -22,9 +23,11 @@ export default function SignUp() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    setIsLoading(true);
 
     const data = { username, firstName, lastName, password };
 
@@ -109,9 +112,7 @@ export default function SignUp() {
             </div>
           </CardContent>
           <CardFooter className="flex-col gap-2">
-            <Button type="submit" className="w-full">
-              Signup
-            </Button>
+            <SpinnerButton isLoading={isLoading}/>
           </CardFooter>
         </form>
       </Card>
