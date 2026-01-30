@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SpinnerButton } from "@/components/Spinner"
+import { SpinnerButton } from "@/components/Spinner";
 
 export default function SignUp() {
   const router = useRouter();
@@ -25,7 +25,7 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
 
@@ -36,8 +36,10 @@ export default function SignUp() {
       if (response.status === 200 || response.status === 201) {
         router.push("/signin");
       }
-    } catch (error) {
-      console.error("Error:", error);
+    } catch (e) {
+      console.error("Error:", e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -76,7 +78,7 @@ export default function SignUp() {
                 <Label htmlFor="firstname">Firstname</Label>
                 <Input
                   id="firstname"
-                  type="firstname"
+                  type="text"
                   placeholder="John"
                   onChange={(e) => {
                     setFirstName(e.target.value);
@@ -88,7 +90,7 @@ export default function SignUp() {
                 <Label htmlFor="lastname">Lastname</Label>
                 <Input
                   id="lastname"
-                  type="lastname"
+                  type="text"
                   placeholder="Doe"
                   onChange={(e) => {
                     setLastName(e.target.value);
@@ -112,7 +114,7 @@ export default function SignUp() {
             </div>
           </CardContent>
           <CardFooter className="flex-col gap-2">
-            <SpinnerButton isLoading={isLoading}/>
+            <SpinnerButton isLoading={isLoading} />
           </CardFooter>
         </form>
       </Card>
