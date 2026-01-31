@@ -17,7 +17,6 @@ import { SpinnerButton } from "@/components/Spinner";
 import Link from "next/link";
 import axios from "axios";
 
-
 export default function SignIn() {
   const router = useRouter();
   const [username, setUsername] = useState("");
@@ -37,6 +36,8 @@ export default function SignIn() {
       }
     } catch (e) {
       console.error("Error:", e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,36 +58,36 @@ export default function SignIn() {
 
         <form onSubmit={handleSubmit}>
           <CardContent>
-              <div className="flex flex-col gap-6">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="m@example.com"
-                    onChange={(e) => {
-                      setUsername(e.target.value);
-                    }}
-                    required
-                  />
-                </div>
-                <div className="grid gap-2 mb-4">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
-                  </div>
-                  <Input
-                    id="password"
-                    type="password"
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                    }}
-                    required
-                  />
-                </div>
+            <div className="flex flex-col gap-6">
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="m@example.com"
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
+                  required
+                />
               </div>
+              <div className="grid gap-2 mb-4">
+                <div className="flex items-center">
+                  <Label htmlFor="password">Password</Label>
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  required
+                />
+              </div>
+            </div>
           </CardContent>
           <CardFooter className="flex-col gap-2">
-            <SpinnerButton isLoading={isLoading}/>
+            <SpinnerButton isLoading={isLoading} />
           </CardFooter>
         </form>
       </Card>

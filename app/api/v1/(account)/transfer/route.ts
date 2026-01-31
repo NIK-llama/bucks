@@ -11,9 +11,9 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    const amount = Number(body.amount);
+    const amount = Math.round(Number(body.amount));
     const toUserId = Number(body.to);
-    
+
     if (amount <= 0) {
       return NextResponse.json(
         { error: "Invalid transfer amount" },
@@ -24,25 +24,36 @@ export async function POST(req: NextRequest) {
     const decoded = await verifyToken(token);
     const fromUserId = Number(decoded.userId);
 
+    if (fromUserId === toUserId) {
+      return NextResponse.json(
+        { error: "Cannot send money to yourself" },
+        { status: 400 },
+      );
+    }
+
     await prisma.$transaction(async (tx) => {
       const senderUpdate = await tx.account.updateMany({
         where: {
           userId: fromUserId,
-          balance: { gte: amount } 
+          balance: { gte: amount },
         },
         data: {
-          balance: { decrement: amount }
-        }
+          balance: { decrement: amount },
+        },
       });
 
       if (senderUpdate.count === 0) {
         throw new Error("Insufficient balance or account not found");
       }
 
-      await tx.account.update({
-        where: { userId: toUserId },
-        data: { balance: { increment: amount } }
-      });
+      try {
+        await tx.account.update({
+          where: { userId: toUserId },
+          data: { balance: { increment: amount } },
+        });
+      } catch (e) {
+        throw new Error("INVALID_RECEIVER");
+      }
     });
 
     return NextResponse.json({ message: "Transfer successful" });
@@ -59,4 +70,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Transfer failed" }, { status: 500 });
   }
 }
-

@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     await prisma.account.create({
       data: {
         userId: user.id,
-        balance: 1 + Math.random() * 1000,
+        balance: 500 * 100,
       }
     })
 
