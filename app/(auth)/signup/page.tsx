@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SpinnerButton } from "@/components/Spinner";
+import { SpinnerButton } from "@/components/SpinnerButton";
 
 export default function SignUp() {
   const router = useRouter();
@@ -114,7 +114,7 @@ export default function SignUp() {
             </div>
           </CardContent>
           <CardFooter className="flex-col gap-2">
-            <SpinnerButton isLoading={isLoading} />
+            <SpinnerButton isLoading={isLoading} type={"signup"}/>
           </CardFooter>
         </form>
       </Card>

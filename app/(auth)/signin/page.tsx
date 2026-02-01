@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SpinnerButton } from "@/components/Spinner";
+import { SpinnerButton } from "@/components/SpinnerButton";
 import Link from "next/link";
 import axios from "axios";
 
@@ -87,7 +87,7 @@ export default function SignIn() {
             </div>
           </CardContent>
           <CardFooter className="flex-col gap-2">
-            <SpinnerButton isLoading={isLoading} />
+            <SpinnerButton isLoading={isLoading} type={"signin"} />
           </CardFooter>
         </form>
       </Card>
