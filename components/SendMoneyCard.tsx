@@ -3,11 +3,12 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"; // Added CardFooter
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { SpinnerButton } from "@/components/SpinnerButton";
+import { Button } from "@/components/ui/button"; 
 
 interface SendMoneyCardProps {
   name: string;
@@ -68,7 +69,7 @@ export function SendMoneyCard({ name, id }: SendMoneyCardProps) {
         </CardHeader>
 
         <form onSubmit={handleTransfer}>
-          <CardContent className="space-y-6 px-8 pb-10">
+          <CardContent className="space-y-6 px-8">
             <div className="flex items-center space-x-4">
               <Avatar className="h-12 w-12">
                 <AvatarFallback className="bg-green-500 text-white text-xl font-bold">
@@ -85,7 +86,7 @@ export function SendMoneyCard({ name, id }: SendMoneyCardProps) {
               <Input
                 id="amount"
                 type="number"
-                step="0.01" // Allows decimals for Paise in the UI
+                step="0.01"
                 placeholder="Enter amount"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
@@ -95,6 +96,17 @@ export function SendMoneyCard({ name, id }: SendMoneyCardProps) {
             <SpinnerButton isLoading={isLoading} type="transfer" />
           </CardContent>
         </form>
+
+        <CardFooter className="flex flex-col space-y-2 pb-10">
+          <Button 
+            variant="ghost" 
+            className="w-full text-muted-foreground border-2"
+            onClick={() => router.push("/dashboard")}
+            disabled={isLoading}
+          >
+            Close
+          </Button>
+        </CardFooter>
       </Card>
     </div>
   );
